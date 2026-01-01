@@ -1,1 +1,78 @@
-<p>service-dependency-example works!</p>
+<div class="container">
+  <h2>🔧 Service Dependency Injection Example</h2>
+  <p>
+    This component demonstrates dependency injection using the <strong>Data Service</strong> with
+    <strong>Async Pipes</strong>
+  </p>
+
+  <div class="section">
+    <h3>📝 Posts from JSONPlaceholder API</h3>
+
+    <!-- Using async pipe with loading state -->
+    <div *ngIf="(posts$ | async) === null" class="loading">Loading posts...</div>
+
+    <!-- Display posts using async pipe -->
+    <ng-container *ngIf="posts$ | async as posts">
+      <p><strong>Posts loaded:</strong> {{ posts.length }}</p>
+
+      <div class="posts-grid" *ngIf="posts.length > 0">
+        <div
+          *ngFor="let post of posts; trackBy: trackByPostId"
+          class="post-card"
+          (click)="viewPost(post.id)"
+        >
+          <h4>{{ post.title }}</h4>
+          <p>{{ post.body.substring(0, 100) }}...</p>
+          <small>User ID: {{ post.userId }}</small>
+        </div>
+      </div>
+
+      <div *ngIf="posts.length === 0" class="no-data">No posts available.</div>
+    </ng-container>
+  </div>
+
+  <!-- Selected Post Section -->
+  <div class="section" *ngIf="selectedPostId && (selectedPost$ | async) as selectedPost">
+    <h3>📖 Selected Post Details</h3>
+    <div class="selected-post">
+      <h4>{{ selectedPost.title }}</h4>
+      <p>{{ selectedPost.body }}</p>
+      <small>Post ID: {{ selectedPost.id }} | User ID: {{ selectedPost.userId }}</small>
+    </div>
+  </div>
+
+  <!-- Users Section -->
+  <div class="section">
+    <h3>👥 Users from API</h3>
+
+    <!-- Loading state for users -->
+    <div *ngIf="(users$ | async) === null" class="loading">Loading users...</div>
+
+    <!-- Display users using async pipe -->
+    <div class="users-list" *ngIf="users$ | async as users">
+      <div *ngFor="let user of users" class="user-card">
+        <strong>{{ user.name }}</strong> (@{{ user.username }})
+        <br />
+        <small>{{ user.email }} | {{ user.phone }}</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Post Section -->
+  <div class="section">
+    <h3>➕ Test Create Post</h3>
+    <button (click)="createNewPost()" class="create-btn">Create New Post via DI Service</button>
+  </div>
+
+  <!-- Info Section -->
+  <div class="info">
+    <h4>🎯 Dependency Injection with Async Pipes:</h4>
+    <ul>
+      <li><strong>Service:</strong> Data service injected via constructor</li>
+      <li><strong>Async Pipes:</strong> Automatic subscription/unsubscription</li>
+      <li><strong>Change Detection:</strong> Handled automatically by async pipe</li>
+      <li><strong>Memory Management:</strong> No memory leaks (auto unsubscribe)</li>
+      <li><strong>API:</strong> JSONPlaceholder (fake REST API)</li>
+    </ul>
+  </div>
+</div>
