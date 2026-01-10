@@ -21,9 +21,23 @@
           class="post-card"
           (click)="viewPost(post.id)"
         >
-          <h4>{{ post.title }}</h4>
+          <div class="post-header">
+            <h4>{{ post.title }}</h4>
+            <div class="post-actions">
+              <button class="edit-btn" (click)="editPost(post, $event)" title="Edit this post">
+                ✏️
+              </button>
+              <button
+                class="delete-btn"
+                (click)="deletePost(post.id, $event)"
+                title="Delete this post"
+              >
+                🗑️
+              </button>
+            </div>
+          </div>
           <p>{{ post.body.substring(0, 100) }}...</p>
-          <small>User ID: {{ post.userId }}</small>
+          <small>User ID: {{ post.userId }} | Post ID: {{ post.id }}</small>
         </div>
       </div>
 
